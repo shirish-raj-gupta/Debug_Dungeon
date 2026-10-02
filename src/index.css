@@ -1,0 +1,582 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #05070d;
+    --bg-panel: #090d16;
+    --bg-card: #0e1524;
+    --border-dim: #1c2844;
+    --accent-cyan: #00f2fe;
+    --accent-neon: #00ff9d;
+    --accent-purple: #b02aef;
+    --accent-amber: #fbbf24;
+    --accent-crimson: #ff3366;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    border: none;
+  }
+}
+
+/* Custom cyber scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c2844;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 242, 254, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2b3c63;
+  border-color: rgba(0, 242, 254, 0.5);
+}
+
+/* Cyber grid background */
+.cyber-grid-bg {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 242, 254, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 242, 254, 0.035) 1px, transparent 1px);
+}
+
+.cyber-dots-bg {
+  background-image: radial-gradient(rgba(0, 242, 254, 0.12) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Glowing border effect */
+.glow-border-cyan {
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.2), inset 0 0 15px -3px rgba(0, 242, 254, 0.1);
+}
+
+.glow-border-neon {
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  box-shadow: 0 0 15px -3px rgba(0, 255, 157, 0.2), inset 0 0 15px -3px rgba(0, 255, 157, 0.1);
+}
+
+.glow-border-purple {
+  border: 1px solid rgba(176, 42, 239, 0.3);
+  box-shadow: 0 0 15px -3px rgba(176, 42, 239, 0.2), inset 0 0 15px -3px rgba(176, 42, 239, 0.1);
+}
+
+.glow-border-amber {
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  box-shadow: 0 0 15px -3px rgba(251, 191, 36, 0.2), inset 0 0 15px -3px rgba(251, 191, 36, 0.1);
+}
+
+.glow-border-crimson {
+  border: 1px solid rgba(255, 51, 102, 0.3);
+  box-shadow: 0 0 15px -3px rgba(255, 51, 102, 0.2), inset 0 0 15px -3px rgba(255, 51, 102, 0.1);
+}
+
+/* CRT scanlines effect for terminal view */
+.scanline-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.35) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Glassmorphism panel */
+.glass-panel {
+  background: rgba(14, 21, 36, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(43, 60, 99, 0.6);
+}
+
+.glass-panel-glow {
+  background: rgba(14, 21, 36, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Code editor line numbering */
+.code-editor-textarea {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  tab-size: 2;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: auto;
+}
+
+/* ========================================================
+   DUNGEON ROOM & CONDUIT ANIMATIONS (Hardware-Accelerated)
+   ======================================================== */
+
+/* Locked room / chamber diagonal hazard stripes */
+.locked-room-hazard {
+  background-color: #040711;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(15, 23, 42, 0.9),
+    rgba(15, 23, 42, 0.9) 10px,
+    rgba(3, 7, 18, 0.95) 10px,
+    rgba(3, 7, 18, 0.95) 20px
+  );
+}
+
+/* Subtle room pulse glow for custom dungeon rooms */
+@keyframes room-pulse-cyan {
+  0%, 100% {
+    box-shadow: 0 0 14px -3px rgba(0, 242, 254, 0.25), inset 0 0 10px -2px rgba(0, 242, 254, 0.08);
+    border-color: rgba(0, 242, 254, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 28px 2px rgba(0, 242, 254, 0.45), inset 0 0 18px 1px rgba(0, 242, 254, 0.18);
+    border-color: rgba(0, 242, 254, 0.65);
+  }
+}
+
+@keyframes room-pulse-purple {
+  0%, 100% {
+    box-shadow: 0 0 14px -3px rgba(176, 42, 239, 0.25), inset 0 0 10px -2px rgba(176, 42, 239, 0.08);
+    border-color: rgba(176, 42, 239, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 28px 2px rgba(176, 42, 239, 0.45), inset 0 0 18px 1px rgba(176, 42, 239, 0.18);
+    border-color: rgba(176, 42, 239, 0.65);
+  }
+}
+
+@keyframes room-pulse-amber {
+  0%, 100% {
+    box-shadow: 0 0 14px -3px rgba(251, 191, 36, 0.25), inset 0 0 10px -2px rgba(251, 191, 36, 0.08);
+    border-color: rgba(251, 191, 36, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 28px 2px rgba(251, 191, 36, 0.45), inset 0 0 18px 1px rgba(251, 191, 36, 0.18);
+    border-color: rgba(251, 191, 36, 0.65);
+  }
+}
+
+@keyframes room-pulse-rose {
+  0%, 100% {
+    box-shadow: 0 0 14px -3px rgba(244, 63, 94, 0.25), inset 0 0 10px -2px rgba(244, 63, 94, 0.08);
+    border-color: rgba(244, 63, 94, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 28px 2px rgba(244, 63, 94, 0.45), inset 0 0 18px 1px rgba(244, 63, 94, 0.18);
+    border-color: rgba(244, 63, 94, 0.65);
+  }
+}
+
+@keyframes room-pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 16px -2px rgba(234, 179, 8, 0.3), inset 0 0 12px -2px rgba(239, 68, 68, 0.12);
+    border-color: rgba(234, 179, 8, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 32px 3px rgba(234, 179, 8, 0.6), inset 0 0 22px 2px rgba(239, 68, 68, 0.25);
+    border-color: rgba(234, 179, 8, 0.8);
+  }
+}
+
+@keyframes room-pulse-emerald {
+  0%, 100% {
+    box-shadow: 0 0 14px -3px rgba(16, 185, 129, 0.25), inset 0 0 10px -2px rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 26px 2px rgba(16, 185, 129, 0.45), inset 0 0 16px 1px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.7);
+  }
+}
+
+.animate-room-pulse-cyan {
+  animation: room-pulse-cyan 3.2s ease-in-out infinite;
+}
+
+.animate-room-pulse-purple {
+  animation: room-pulse-purple 3.2s ease-in-out infinite;
+}
+
+.animate-room-pulse-amber {
+  animation: room-pulse-amber 3.2s ease-in-out infinite;
+}
+
+.animate-room-pulse-rose {
+  animation: room-pulse-rose 3.2s ease-in-out infinite;
+}
+
+.animate-room-pulse-gold {
+  animation: room-pulse-gold 2.8s ease-in-out infinite;
+}
+
+.animate-room-pulse-emerald {
+  animation: room-pulse-emerald 3.2s ease-in-out infinite;
+}
+
+/* Continuous energy pulse along dungeon pipeline conduits */
+@keyframes conduit-stream {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300%);
+    opacity: 0;
+  }
+}
+
+.animate-conduit-stream {
+  animation: conduit-stream 2.2s linear infinite;
+}
+
+/* High-speed traversal pulse when player moves */
+@keyframes traversal-beam {
+  0% {
+    transform: translateY(-100%) scaleY(0.2);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0%) scaleY(1.4);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(100%) scaleY(1.4);
+  }
+  100% {
+    transform: translateY(220%) scaleY(0.2);
+    opacity: 0;
+  }
+}
+
+.animate-traversal-beam {
+  animation: traversal-beam 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Player presence radar / sonar ring */
+@keyframes radar-beacon {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.animate-radar-beacon {
+  animation: radar-beacon 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+/* Room entrance shockwave when player arrives */
+@keyframes room-arrival-shockwave {
+  0% {
+    transform: scale(0.96);
+    filter: brightness(1.6);
+  }
+  50% {
+    transform: scale(1.02);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.animate-arrival-shockwave {
+  animation: room-arrival-shockwave 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ========================================================
+   SEV-0 BOSS INCIDENT SCREEN ANIMATIONS
+   ======================================================== */
+
+@keyframes boss-alarm-strobe {
+  0%, 100% {
+    background-color: rgba(225, 29, 72, 0.15);
+    border-color: rgba(244, 63, 94, 0.7);
+    box-shadow: 0 0 25px rgba(225, 29, 72, 0.4), inset 0 0 15px rgba(225, 29, 72, 0.2);
+  }
+  50% {
+    background-color: rgba(225, 29, 72, 0.35);
+    border-color: rgba(251, 113, 133, 0.95);
+    box-shadow: 0 0 45px rgba(225, 29, 72, 0.65), inset 0 0 25px rgba(225, 29, 72, 0.35);
+  }
+}
+
+.animate-boss-alarm-strobe {
+  animation: boss-alarm-strobe 1.6s ease-in-out infinite;
+}
+
+@keyframes boss-radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-boss-radar-sweep {
+  animation: boss-radar-sweep 4s linear infinite;
+}
+
+.boss-hazard-banner {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(225, 29, 72, 0.25),
+    rgba(225, 29, 72, 0.25) 12px,
+    rgba(15, 23, 42, 0.4) 12px,
+    rgba(15, 23, 42, 0.4) 24px
+  );
+}
+
+.boss-screen-vignette {
+  background: radial-gradient(circle at 50% 20%, rgba(225, 29, 72, 0.08) 0%, rgba(5, 7, 13, 0.98) 75%);
+}
+
+/* ========================================================
+   LIGHTWEIGHT VISUAL EVENT FEEDBACK (CSS-ONLY)
+   ======================================================== */
+
+/* 1. Screen Shake on Failure */
+@keyframes screen-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  15% { transform: translate(-5px, 2px) rotate(-0.5deg); }
+  30% { transform: translate(5px, -2px) rotate(0.5deg); }
+  45% { transform: translate(-4px, -2px) rotate(-0.3deg); }
+  60% { transform: translate(4px, 2px) rotate(0.3deg); }
+  75% { transform: translate(-2px, 1px) rotate(0deg); }
+  90% { transform: translate(2px, -1px) rotate(0deg); }
+}
+
+.animate-screen-shake {
+  animation: screen-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* 2. Sad / Damage Flash & Floating Feedback */
+@keyframes damage-flash {
+  0% { opacity: 0.85; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+.animate-damage-flash {
+  animation: damage-flash 0.75s ease-out forwards;
+}
+
+@keyframes damage-float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.85);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.15);
+  }
+  40% {
+    transform: translateY(-20px) scale(1.05);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-45px) scale(0.95);
+  }
+}
+
+.animate-damage-float {
+  animation: damage-float-up 2s ease-out forwards;
+}
+
+@keyframes sad-wobble {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+  15% { transform: translateY(0) rotate(-6deg); opacity: 1; }
+  35% { transform: translateY(0) rotate(6deg); }
+  55% { transform: translateY(0) rotate(-3deg); }
+  75% { transform: translateY(0) rotate(1deg); }
+  90% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(12px) scale(0.9); }
+}
+
+.animate-sad-wobble {
+  animation: sad-wobble 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* 3. Bug Fix Success Animation */
+@keyframes success-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(12px);
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+    box-shadow: 0 0 35px rgba(16, 185, 129, 0.5);
+  }
+  30% {
+    transform: scale(1) translateY(0);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-14px);
+  }
+}
+
+.animate-success-burst {
+  animation: success-burst 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes success-ring-expand {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.animate-success-ring {
+  animation: success-ring-expand 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+/* 4. Low Health Warning Vignette & Heartbeat */
+@keyframes low-health-pulse {
+  0%, 100% {
+    box-shadow: inset 0 0 45px 12px rgba(239, 68, 68, 0.22), inset 0 0 90px 25px rgba(220, 38, 38, 0.12);
+  }
+  50% {
+    box-shadow: inset 0 0 85px 30px rgba(239, 68, 68, 0.42), inset 0 0 140px 50px rgba(220, 38, 38, 0.25);
+  }
+}
+
+.low-health-vignette {
+  animation: low-health-pulse 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes heartbeat-rapid {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.3); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.3); }
+  70% { transform: scale(1); }
+}
+
+.animate-heartbeat-rapid {
+  animation: heartbeat-rapid 0.8s ease-in-out infinite;
+}
+
+/* 5. Consecutive Streak Indicator Ignition */
+@keyframes flame-burn {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.7)) brightness(1);
+  }
+  50% {
+    transform: scale(1.14) translateY(-2px);
+    filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.9)) brightness(1.3);
+  }
+}
+
+.animate-flame-burn {
+  animation: flame-burn 1.3s ease-in-out infinite;
+}
+
+@keyframes streak-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(10px);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1) translateY(0);
+  }
+  35% {
+    transform: scale(1) translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
+  }
+}
+
+.animate-streak-pop {
+  animation: streak-pop 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 6. Level Up Celebration Rays */
+@keyframes ray-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-ray-spin {
+  animation: ray-spin 22s linear infinite;
+}
+
+@keyframes level-up-fanfare {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) translateY(20px);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.08) translateY(0);
+  }
+  40% {
+    transform: scale(1) translateY(0);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-15px);
+  }
+}
+
+.animate-level-up-fanfare {
+  animation: level-up-fanfare 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
